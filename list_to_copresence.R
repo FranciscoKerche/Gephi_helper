@@ -2,17 +2,17 @@ copresence_gephi <- function(base, copresence, by, simple = F){ #erro arg must b
   `%>%` <- magrittr::`%>%`
   if(simple == T){
     basic <- base %>%
-      group_by({{copresence}}, {{by}}) %>%
-      summarise() %>%
-      ungroup() %>%
-      group_by({{copresence}}) %>%
-      summarise(count = n()) %>%
-      filter(count > 1) %>%
-      select(f = {{copresence}})
+      dplyr::group_by({{copresence}}, {{by}}) %>%
+      dplyr::summarise() %>%
+      dplyr::ungroup() %>%
+      dplyr::group_by({{copresence}}) %>%
+      dplyr::summarise(count = n()) %>%
+      dplyr::filter(count > 1) %>%
+      dplyr::select(f = {{copresence}})
     base %>%
-      filter({{copresence}} %in% basic$f) %>%
-      group_by({{by}}) %>%
-      summarise(gephi = paste({{copresence}}, collapse = ","))
+      dplyr::filter({{copresence}} %in% basic$f) %>%
+      dplyr::group_by({{by}}) %>%
+      dplyr::summarise(gephi = paste({{copresence}}, collapse = ","))
   } else {
   base %>%
     dplyr::group_by({{ by }}) %>%
@@ -25,3 +25,4 @@ copresence_gephi <- function(base, copresence, by, simple = F){ #erro arg must b
 #base : The data-set to be used
 #copresence : the variable you want to be associated by copresence, for instance, if you want to see the copresence of students in a class, you should put students here
 #by : by wich value should it be copresent, for instance, if you want to see the copresence of students in a classroom, you should put the class-room here
+#simple : Only nodes that are in at least two events will be counted as valuable
